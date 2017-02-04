@@ -21,7 +21,7 @@ bmcgehee/gotris:
     - echo "PostInstall Starting."
     - echo "copying to .env" 
     - cd $DISTELLI_INSTALLHOME
-    - cp sample.env .env
+    #- cp sample.env .env
     - ls -la
     - cat bin/distelli-run.sh 
   PreStart:
