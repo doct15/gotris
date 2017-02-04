@@ -8,7 +8,7 @@ bmcgehee/gotris:
     - node/node_modules/
     - mysql_data
   Build:
-    - cd node
+    #- cd node
     - echo "---Building---" 
     #- npm install 
     - echo "---Testing---" 
