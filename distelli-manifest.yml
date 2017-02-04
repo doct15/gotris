@@ -1,0 +1,58 @@
+bmcgehee/gotris:
+  # This Basic Distelli Manifest assumes the following
+  # has been provisioned on the destination deploy server:
+
+  PkgInclude:
+    - '*'
+  PkgExclude:
+    - node/node_modules/
+    - mysql_data
+  Build:
+    - cd node
+    - echo "---Building---" 
+    #- npm install 
+    - echo "---Testing---" 
+    #- npm test
+  PreInstall:
+    - echo "PreInstall Starting."
+    - sudo apt-get install nodejs -y
+    #- sudo apt-get install npm -y
+  PostInstall:
+    - echo "PostInstall Starting."
+    - echo "copying to .env" 
+    - cd $DISTELLI_INSTALLHOME
+    - cp sample.env .env
+    - ls -la
+    - cat bin/distelli-run.sh 
+  PreStart:
+    - echo "PreStart Starting."
+    - cd $DISTELLI_INSTALLHOME
+    #- sudo docker stop `sudo docker ps -q`  
+    #- sudo docker rm `sudo docker ps -q -a` -f
+    - echo "may need to do  'sudo usermod -aG docker'"
+    - sudo docker version
+    - sudo /usr/local/bin/docker-compose version
+    - echo "-Start docker-compose build -" 
+    #- sudo /usr/local/bin/docker-compose build
+    - echo "-Done docker-compose build -"
+    - cat bin/distelli-run.sh 
+  Exec:
+    - echo "Exec Starting.(run script)"
+    - cd $DISTELLI_INSTALLHOME
+    - echo "-Start docker-compose up -" 
+    - sudo /usr/local/bin/docker-compose up
+    - echo "Exec done"
+  Start:
+    - echo "Start Starting."
+    - sudo /usr/local/bin/docker-compose up 
+  PostStart:
+    - publicip=$(curl -s ident.me) || true
+    - echo "You can validate the install by pointing your browser at http://$publicip"
+  Terminate:
+    - echo "terminating"
+    - sudo /usr/local/bin/docker-compose stop
+    - sudo /usr/local/bin/docker-compose rm -f
+  PreRestart:
+    - echo "PreRestart"
+    - sudo /usr/local/bin/docker-compose stop
+    - sudo /usr/local/bin/docker-compose rm -f
